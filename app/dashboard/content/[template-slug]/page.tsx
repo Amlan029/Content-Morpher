@@ -23,7 +23,7 @@ function CreateNewContent() {
   const [loading, setLoading] = useState(false);
   const [aiOutput, setAiOutput] = useState<string>("");
 
-  const {totalUsage} = useContext(TotalUsageContext)
+  const {totalUsage, setTotalUsage} = useContext(TotalUsageContext)
   const {userSubscription} = useContext(UserSubscriptionContext)
   const router = useRouter();
   const GenerateAiContent = async (formData: any) => {
@@ -48,6 +48,12 @@ function CreateNewContent() {
       }
 
       setAiOutput(data.text);
+
+      // ⭐ immediately update credits here
+      const wordsUsed =
+        data.text?.trim().length ? data.text.trim().split(/\s+/).length : 0;
+
+      setTotalUsage((prev: number) => prev + wordsUsed);
     } catch (error) {
       console.error(error);
     } finally {
