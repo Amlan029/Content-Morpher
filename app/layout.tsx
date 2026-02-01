@@ -3,7 +3,7 @@ import { Outfit } from "next/font/google";
 import { Toaster } from 'react-hot-toast';
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { TotalUsageContext } from "./(context)/TotalUsageCredit";
+
 
 const outfit = Outfit({
   variable: "--font-geist-sans",
