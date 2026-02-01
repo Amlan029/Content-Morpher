@@ -1,9 +1,10 @@
 "use client";
 
 import  { useEffect, useState } from "react";
-import { Copy, Loader } from "lucide-react";
+import { Copy,  Loader, Trash } from "lucide-react";
 import Templates from "@/app/(data)/Templates"; 
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 
 export type HistoryItem = {
@@ -41,11 +42,29 @@ const HistoryPage = () => {
     loadHistory();
   }, []);
 
+  const deleteHistory = async (id:number)=>{
+    try {
+        const res = await fetch("/api/DelHistory",{
+          method: "DELETE",
+          headers: {
+          "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id })
+        });
+        if (!res.ok) throw new Error("Failed to Delete history");
+        setItems(prev => prev.filter(item => item.id !== id));
+        toast.success("Response Deleted From History✅");
+        
+      } catch (err) {
+        console.error(err);
+      }
+  }
+
   const handleCopy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
       // you can plug in your toast here
-      alert("Copied to clipboard");
+      toast.success("Copied to clipboard✅");
     } catch (err) {
       console.error("Copy failed", err);
     }
@@ -106,13 +125,16 @@ const HistoryPage = () => {
                   </div>
                 </div>
 
-                <button
+                <div className="flex gap-3">
+                  <button
                   onClick={() => handleCopy(item.aiResponse)}
                   className="inline-flex items-center gap-1 text-xs px-3 py-1.5 rounded-full border hover:bg-accent transition hover:scale-108"
                 >
                   <Copy className="h-3 w-3 " />
                   Copy
                 </button>
+                <button onClick={()=>deleteHistory(item.id)} className="transition hover:scale-108"><Trash color="red"/></button>
+                </div>
               </div>
 
               {/* Body / AI response */}
