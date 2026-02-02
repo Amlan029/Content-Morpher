@@ -42,8 +42,7 @@ const HistoryPage = () => {
     };
 
     loadHistory();
-    //DEBUGGED⭐: Immediately Recalculate user usage after deleting history 
-    loadData();
+    
   }, []);
   const loadData = async () => {
     try {
@@ -75,6 +74,8 @@ const HistoryPage = () => {
         });
         if (!res.ok) throw new Error("Failed to Delete history");
         setItems(prev => prev.filter(item => item.id !== id));
+        //DEBUGGED⭐: Immediately Recalculate user usage after deleting history 
+        loadData();
         toast.success("Response Deleted From History✅");
         
       } catch (err) {
