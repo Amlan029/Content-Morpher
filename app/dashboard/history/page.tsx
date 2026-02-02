@@ -1,6 +1,7 @@
 "use client";
 
-import  { useEffect, useState } from "react";
+import  { useContext, useEffect, useState } from "react";
+import { TotalUsageContext } from "@/app/(context)/TotalUsageCredit";
 import { Copy,  Loader, Trash } from "lucide-react";
 import Templates from "@/app/(data)/Templates"; 
 import Image from "next/image";
@@ -24,6 +25,7 @@ function getTemplateMeta(slug: string) {
 const HistoryPage = () => {
   const [items, setItems] = useState<HistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { setTotalUsage } = useContext(TotalUsageContext);
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -40,8 +42,28 @@ const HistoryPage = () => {
     };
 
     loadHistory();
+    //DEBUGGED⭐: Immediately Recalculate user usage after deleting history 
+    loadData();
   }, []);
-
+  const loadData = async () => {
+    try {
+      const res = await fetch("/api/GetUsage");
+      if (!res.ok) throw new Error("Failed to load Usage");
+      const data = await res.json();
+      GetTotalUsage(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  //load used credits on every reload
+  //⭐TODO⭐: return total usage of user from api/GetUsage/route.ts instead of history
+  const GetTotalUsage = (data: HistoryItem[]) => {
+    let total = 0;
+    data.forEach((element) => {
+      total += Number(element.aiResponse?.trim().split(/\s+/).length);
+    });
+    setTotalUsage(total);
+  };
   const deleteHistory = async (id:number)=>{
     try {
         const res = await fetch("/api/DelHistory",{

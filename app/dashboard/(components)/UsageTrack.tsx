@@ -6,6 +6,7 @@ import { useUser } from '@clerk/nextjs';
 import { TotalUsageContext } from '@/app/(context)/TotalUsageCredit';
 import { UserSubscriptionContext } from '@/app/(context)/UserSubscriptionContext';
 
+
 function UsageTrack() {
   const { user } = useUser();
   const hasFetched = useRef(false);
@@ -36,6 +37,7 @@ function UsageTrack() {
     }
   };
   //load used credits on every reload
+  //⭐TODO⭐: return total usage of user from api/GetUsage/route.ts instead of history
   const GetTotalUsage = (data: HistoryItem[]) => {
     let total = 0;
     data.forEach((element) => {
