@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     // return new APIResponse({ success: true }, 200);
   } catch (error) {
     console.error(error);
-    // return NextResponse.json({ success: false }, { status: 500 });
-    return new APIError("Something went wrong", 500);
+    return NextResponse.json({ success: false }, { status: 500 });
+    // return new APIError("Something went wrong", 500);
   }
 }

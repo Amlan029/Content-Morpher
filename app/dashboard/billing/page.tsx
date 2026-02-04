@@ -37,8 +37,7 @@ function Page() {
       });
 
       if (!res.ok) throw new Error("Failed to create subscription");
-      const json = await res.json();
-      const data =  json.data;// expect { id: "sub_xxx" }
+      const data = await res.json(); // expect { id: "sub_xxx" }
       onPayment(data.id);
     } catch (err) {
       console.error(err);

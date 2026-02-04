@@ -3,8 +3,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { db } from "@/utils/db";
 import { UserSubscription } from "@/utils/schema"; 
 import { eq } from "drizzle-orm";
-import { APIResponse } from "@/lib/APIResponse";
-import { APIError } from "@/lib/APIError";
+// import { APIResponse } from "@/lib/APIResponse";
+// import { APIError } from "@/lib/APIError";
 import { NextResponse } from "next/server";
 
 
@@ -33,7 +33,7 @@ export async function GET() {
     // return new APIResponse({ isSubscribed: res[0].active }, 200);
   } catch (error) {
     console.error(error);
-    // return NextResponse.json({ isSubscribed: false });
-    return new APIError("Something went wrong", 500);
+    return NextResponse.json({ isSubscribed: false });
+    // return new APIError("Something went wrong", 500);
   }
 }

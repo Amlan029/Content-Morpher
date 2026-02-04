@@ -30,8 +30,7 @@ function UsageTrack() {
     try {
       const res = await fetch("/api/GetUsage");
       if (!res.ok) throw new Error("Failed to load Usage");
-      const json = await res.json();
-      const data = json.data;
+      const data = await res.json();
       GetTotalUsage(data);
     } catch (err) {
       console.error(err);
