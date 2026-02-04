@@ -38,8 +38,8 @@ function CreateNewContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData, templateSlug }),
       });
-
-      const data = await res.json();
+      const json = await res.json();
+      const data = json.data;
       if (!res.ok) {
         toast.error("Error while fetching GenAIRes");
         return;

@@ -1,10 +1,13 @@
-import { NextResponse } from "next/server";
+
 import { GoogleGenAI } from "@google/genai";
 import { db } from "@/utils/db";
 import { AIOutput } from "@/utils/schema";
 import Templates from "@/app/(data)/Templates";
 import { currentUser } from "@clerk/nextjs/server";
-import toast from "react-hot-toast";
+
+import { APIError } from "@/lib/APIError";
+import { APIResponse } from "@/lib/APIResponse";
+import { NextResponse } from "next/server";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!, 
@@ -17,10 +20,11 @@ export async function POST(req: Request) {
     const user = await currentUser();
     const email = user?.primaryEmailAddress?.emailAddress;
     if (!email) {
-      return NextResponse.json(
-        { error: "User not authenticated" },
-        { status: 401 }
-      );
+      // return NextResponse.json(
+      //   { error: "User not authenticated" },
+      //   { status: 401 }
+      // );
+      return new APIError("User not authenticated", 401);
     }
 
     const selectedTemplate = Templates.find(
@@ -45,9 +49,11 @@ export async function POST(req: Request) {
       createdAt: new Date().toISOString(),
     });
 
-    return NextResponse.json({ text });
+    // return NextResponse.json({ text });
+    return new APIResponse({ text }, 200);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    // return NextResponse.json({ error: "Internal error" }, { status: 500 });
+    return new APIError("Internal error", 500);
   }
 }
