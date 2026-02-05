@@ -31,7 +31,7 @@ function UsageTrack() {
       const res = await fetch("/api/GetUsage");
       if (!res.ok) throw new Error("Failed to load Usage");
       const data = await res.json();
-      GetTotalUsage(data);
+      GetTotalUsage(data.data);
     } catch (err) {
       console.error(err);
     }
@@ -52,7 +52,7 @@ function UsageTrack() {
         if (!res.ok) throw new Error("Failed to check User Subscription");
 
         const data = await res.json(); // e.g. { isSubscribed: true }
-        setUserSubscription(data.isSubscribed);
+        setUserSubscription(data.data.isSubscribed);
       } catch (e) {
         console.error("Failed to fetch subscription status", e);
       }

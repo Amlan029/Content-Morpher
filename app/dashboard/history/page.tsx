@@ -32,7 +32,8 @@ const HistoryPage = () => {
       try {
         const res = await fetch("/api/GetHistory");
         if (!res.ok) throw new Error("Failed to load history");
-        const data = await res.json();
+        const json = await res.json();
+        const data = json.data;
         setItems(data);
       } catch (err) {
         console.error(err);

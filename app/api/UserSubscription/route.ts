@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
     const email = user?.emailAddresses[0]?.emailAddress ?? "";
     const userName = user?.fullName ?? "";
 
+    //store user subcription info to DB
     await db.insert(UserSubscription).values({
       email,
       userName,
@@ -24,11 +25,11 @@ export async function POST(req: NextRequest) {
       paymentId,
       joinDate: new Date().toISOString(),
     });
-    return NextResponse.json({ success: true }, { status: 200 });
-    // return new APIResponse({ success: true }, 200);
+    // return NextResponse.json({ success: true }, { status: 200 });
+    return  APIResponse({ success: true }, 200);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ success: false }, { status: 500 });
-    // return new APIError("Something went wrong", 500);
+    // return NextResponse.json({ success: false }, { status: 500 });
+    return  APIError("Something went wrong", 500);
   }
 }

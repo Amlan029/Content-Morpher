@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 
-export class APIResponse<T> {
-  constructor(data?: T, status = 200) {
-    return NextResponse.json(
-      {
-        success: true,
-        data: data ?? null,
-      },
-      { status }
-    );
-  }
+export function APIResponse(
+  data?: any,
+  status?: number
+): Response {
+  return NextResponse.json(
+    {
+      success: true,
+      data: data ?? null,
+    },
+    { status: status ?? 200 } // 👈 default to 200
+  );
 }

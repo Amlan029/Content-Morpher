@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-// import { APIResponse } from "@/lib/APIResponse";
+import { APIResponse } from "@/lib/APIResponse";
 import Razorpay from "razorpay";
 export async function POST(req: NextRequest){
     let instance = new Razorpay({
@@ -18,6 +18,6 @@ export async function POST(req: NextRequest){
 
     })
     // Next.js API route handlers are NOT allowed to return custom classes or objects
-    return NextResponse.json(result, {status: 200})
-    // return new APIResponse(result,200);
+    // return NextResponse.json(result, {status: 200})
+    return  APIResponse(result,200);
 }

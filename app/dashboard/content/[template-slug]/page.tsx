@@ -30,7 +30,7 @@ function CreateNewContent() {
     try {
       setLoading(true);
       if(totalUsage>=10000 && !userSubscription){
-        toast.caller("You are out of Credit⚠️");
+        toast.error("You are out of Credit⚠️");
         router.push("/dashboard/billing")
       }
       const res = await fetch("/api/GenAIRes", {
@@ -38,7 +38,8 @@ function CreateNewContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ formData, templateSlug }),
       });
-      const data = await res.json();
+      const json = await res.json();
+      const data = json.data;
       if (!res.ok) {
         toast.error("Error while fetching GenAIRes");
         return;

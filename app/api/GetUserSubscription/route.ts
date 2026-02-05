@@ -3,8 +3,8 @@ import { currentUser } from "@clerk/nextjs/server";
 import { db } from "@/utils/db";
 import { UserSubscription } from "@/utils/schema"; 
 import { eq } from "drizzle-orm";
-// import { APIResponse } from "@/lib/APIResponse";
-// import { APIError } from "@/lib/APIError";
+import { APIResponse } from "@/lib/APIResponse";
+import { APIError } from "@/lib/APIError";
 import { NextResponse } from "next/server";
 
 
@@ -13,8 +13,8 @@ export async function GET() {
     const user = await currentUser();
     const email = user?.primaryEmailAddress?.emailAddress;
     if (!user || !email) {
-      return NextResponse.json({ isSubscribed: false });
-      // return new APIResponse({ isSubscribed: false }, 200);
+      // return NextResponse.json({ isSubscribed: false });
+      return  APIResponse({ isSubscribed: false });
     }
 
     // Query to DB for subscription status
@@ -25,15 +25,15 @@ export async function GET() {
       .limit(1);
 
     if (res.length === 0) {
-      return NextResponse.json({ isSubscribed: false });
-      // return new APIResponse({ isSubscribed: false }, 200);
+      // return NextResponse.json({ isSubscribed: false });
+      return  APIResponse({ isSubscribed: false });
     }
 
-    return NextResponse.json({ isSubscribed: res[0].active });
-    // return new APIResponse({ isSubscribed: res[0].active }, 200);
+    // return NextResponse.json({ isSubscribed: res[0].active });
+    return  APIResponse({ isSubscribed: res[0].active });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ isSubscribed: false });
-    // return new APIError("Something went wrong", 500);
+    
+    return  APIError("Something went wrong", 500);
   }
 }

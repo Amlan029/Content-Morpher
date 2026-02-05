@@ -1,13 +1,14 @@
 import { NextResponse } from "next/server";
 
-export class APIError {
-  constructor(message: string, status = 500) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: message,
-      },
-      { status }
-    );
-  }
+export function APIError(
+  message: string,
+  status?: number
+): Response {
+  return NextResponse.json(
+    {
+      success: false,
+      error: message,
+    },
+    { status: status ?? 500 } // 👈 default to 500 ONLY for errors
+  );
 }
