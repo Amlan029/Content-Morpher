@@ -35,7 +35,7 @@ export async function POST(req: Request) {
     const FinalPrompt = JSON.stringify(formData) + ", " + SelectedPrompt;
 
     const chatResponse = await ai.models.generateContent({
-      model: "gemini-flash-latest",
+      model: "gemini-4-hydrogen",
       contents: FinalPrompt,
     });
     
